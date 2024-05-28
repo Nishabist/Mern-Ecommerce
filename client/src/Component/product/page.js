@@ -1,7 +1,18 @@
 import React from 'react'
 import Link from 'next/link'
+import { useDispatch ,useSelector} from 'react-redux';
+import { AddToCart } from '../../Redux/slices/cartSlice';
+
+
 
 function product(props) {
+  const dispatch=useDispatch();
+  const cart = useSelector((state) => state.cart);
+
+  const handleToCart = () => {
+    dispatch(AddToCart({ cartItems: props}));
+
+  };
   return (
     <div>
        <Link href={`/product/${props.data._id}`}>
@@ -22,8 +33,9 @@ function product(props) {
                             <p className='text-slate-500 line-through'>Rs{props.data.price}</p>
                         </div>
                     
-                    <button className="bg-red-400 hover:bg-red-700 border-rounded text-white px-3 py-0.5 rounded-full">Add to Cart</button>
+                   
                     </Link>
+                    <button className="bg-red-400 hover:bg-red-700 border-rounded text-white px-3 py-0.5 rounded-full" onClick={handleToCart}>Add to Cart</button>
     </div>
   )
 }
