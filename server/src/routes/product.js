@@ -7,7 +7,7 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs')
 const Product = require('../model/product')
-const {getProductCategory,categoryWiseProduct}=require('../controller/product')
+const {getProductCategory,categoryWiseProduct,searchProduct}=require('../controller/product')
 
 // Multer configuration for file upload
 const uploadsDirectory = path.join(__dirname,'..','..', 'uploads', 'image');
@@ -97,8 +97,6 @@ router.get("/products-image", async (req, res) => {
 
 router.get("/productcategory",getProductCategory)
 router.post("/productbycategory",categoryWiseProduct)
-router.get("/searchproduct",async(req,res) =>{
-
-})
+router.get('/searchproduct',searchProduct)
 
 module.exports= router

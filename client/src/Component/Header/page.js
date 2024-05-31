@@ -1,5 +1,5 @@
 'use client'
-import React  from "react";
+import React, { useState }  from "react";
 import Image from 'next/image'
 import { GrSearch } from "react-icons/gr";
 import { FaUser } from "react-icons/fa";
@@ -7,16 +7,35 @@ import { FaShoppingCart } from "react-icons/fa";
 import { useSelector, useDispatch } from 'react-redux';
 import Link from 'next/link'
 import { Button, ConfigProvider, Popover } from 'antd';
-import { setLoginDetails } from '../../Redux/slices/userSlice';
+import { setLoginDetails ,handleLogout} from '../../Redux/slices/userSlice';
 import { AddToCart } from "@/Redux/slices/cartSlice";
-
+import { Input, Space } from 'antd';
+import { AudioOutlined } from '@ant-design/icons';
+const { Search } = Input;
 
 
 function head() {
+  const [searchList,setSearchList]=useState([])
+
   const dispatch= useDispatch()
-  const { userDetail} = useSelector(state=>state.user)
+  const { userDetail,isLoggedIn} = useSelector(state=>state.user)
   const {cartItems}= useSelector(state=>state.cart)
   const text = <span></span>;
+  const onSearch=async(value,_e,info)=>{
+    const res = await fetch('http://localhost:4001/searchproduct?name='+value)
+  const data = await res.json()
+  setSearchList(data.product);
+  }
+  const suffix = (
+    <AudioOutlined
+      style={{
+        fontSize: 16,
+  
+        
+        color: '#1677ff',
+      }}
+    />
+  );
 const content = (
   <div>
    
@@ -40,13 +59,19 @@ const content = (
         </div>
 
 
-        <div className="hidden lg:flex items-center w-full justify-between max-w-sm">
-       <input type="text" placeholder="Search your product here" className="w-full outline-none"/>
-       <div className="text-lg min-w-[50px] h-8 bg-red-600 flex items-center justify-center rounded-r-full text-white "><GrSearch /></div>
-        </div>
+        <Search
+      placeholder="input search text"
+      enterButton="Search"
+      size="medium"
+      className="w-[500px]"
+      suffix={suffix}
+      onSearch={onSearch}
+    />
+        
+        
 
           
-        <div className="flex items-center gap-7">
+        {isLoggedIn ?( <div className="flex items-center gap-7">
          
           <div className="test-3xl cursor-pointer">
           <Popover placement="bottom" title={text} content={content}>
@@ -63,19 +88,41 @@ const content = (
           </Link>
           </div>
         
-        </div>
-      
-      <div>
+        </div>):(
+     <div className="flex items-center ">
+       
+       <div>
       <Link href="/login" className="px-2 py-1 rounded-full text-white bg-red-600 hover:bg-red-700 ">Login</Link>
        
       </div>
       <div>
       <Link href="/register" className="px-0 py-1 rounded-full text-white bg-red-600 hover:bg-red-700 ">register</Link>
        
-      </div>
+      </div> 
+     </div>
+    )}
        </div>
 
     </header>
+    <div className="w-full bg-slate-100 py-4">
+        <div className="container mx-auto">
+          {searchList.length > 0 && (
+            <div className="bg-slate-200 p-4 rounded-lg shadow-md">
+              <h2 className="text-lg font-bold mb-4">Search Results</h2>
+              <div className="grid grid-cols-1 gap-4">
+                {searchList.map((product) => (
+                  <Link key={product._id} href={`/product/${product._id}`}>
+                  <div className="block bg-white p-4 rounded-lg shadow hover:bg-gray-100 transition">
+                    <h3 className="text-xl font-semibold">{product.productName}</h3>
+                   
+                  </div>
+                </Link>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
     </>
   )
 }

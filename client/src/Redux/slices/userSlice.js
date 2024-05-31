@@ -19,9 +19,13 @@ reducers:{
         }
 
     },
-    handleLogout:(state)=>{
-
-    }
+    handleLogout: (state) => {
+        return {
+          ...state,
+          userDetail: {},
+          isLoggedIn: false,
+        };
+      },
 }
 });
 

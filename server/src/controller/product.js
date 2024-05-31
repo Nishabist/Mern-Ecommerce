@@ -29,7 +29,7 @@ const getProductCategory = async (req, res) => {
 }
 
 
-const categoryWiseProduct =async()=>{
+const categoryWiseProduct =async(req,res)=>{
     try {
         const {categoryName} = req?.body || req?.query
         const product = await Product.find({categoryName})
@@ -45,5 +45,22 @@ const categoryWiseProduct =async()=>{
         
     }
 }
+const searchProduct = async (req, res) => {
+    try {
+        const productName = req.query.name;
+        if (typeof productName !== 'string') {
+            return res.status(400).json({ message: 'Invalid query parameter' });
+        }
+        
+        const data = await Product.find({
+            productName: { $regex: new RegExp(productName, 'i') }
+        });
 
-module.exports = { getProductCategory,categoryWiseProduct };
+        res.json({ product: data });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+
+module.exports = { getProductCategory,categoryWiseProduct ,searchProduct};

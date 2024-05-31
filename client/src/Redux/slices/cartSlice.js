@@ -13,7 +13,8 @@ initialState,
 reducers:{
     
 AddToCart:(state,action)=>{
-   state.cartItems=action.payload;
+    // state.cartItems.push(action.payload);
+    state.cartItems=action.payload;
   
    state.quantity+=1;
 },
