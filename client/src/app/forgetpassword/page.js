@@ -6,7 +6,10 @@ import { Formik, Form, Field } from 'formik';
  import { FaEye } from "react-icons/fa";
  import { FaEyeSlash } from "react-icons/fa";
  import Link from 'next/link'
+ 
  import Footer from '../../Component/Footer/page';
+ import {  message } from 'antd';
+ import { useRouter } from 'next/navigation'
 
  const SignupSchema = Yup.object().shape({
   email: Yup.string().email('Invalid email').required('Required'),
@@ -20,12 +23,30 @@ import { Formik, Form, Field } from 'formik';
 
 function forgetpassword() {
   const[showPassword,setShowPassword]=useState(false)
+  const router = useRouter()
+  const [messageApi, contextHolder] = message.useMessage();
+  const forgetPassword =async(values)=>{
+    const res = await fetch('http://localhost:4001/reset-password?userId=${userDetail._id}', {
+      method:'POST', 
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(values)
+    })
+    const data = await res.json()
+      messageApi.open({
+        type: res.status == 200 ? 'success': 'error',
+        content: data.msg,
+        
+      });
+    console.log(res)
+    
+    router.push('/login')
+  }
   return (
     <div >
     <div className='mx-auto container p-4 '>
       <div className='bg-white p-2 py-5 w-full max-w-md mx-auto shadow-md'>
       
-   <h1>Login</h1>
+   <h1>Forget Password</h1>
    
    <Formik
      initialValues={{
@@ -36,7 +57,7 @@ function forgetpassword() {
      validationSchema={SignupSchema}
      onSubmit={values => {
        // same shape as initial values
-       console.log(values);
+       forgetPassword(values)
      }}
    >
      {({ errors, touched }) => (
@@ -86,7 +107,7 @@ function forgetpassword() {
          </div>
          
        
-         <button type="submit" className='bg-red-600 text-white px-6 py-2 w-full max-w-[150px] rounded-full hover:scale-110 mx-auto '>Login</button>
+         <button type="submit" className='bg-red-600 text-white px-6 py-2 w-full max-w-[150px] rounded-full hover:scale-110 mx-auto '>Submit</button>
        </Form>
      )}
    </Formik>
