@@ -4,8 +4,8 @@ import React, { useState, useEffect } from 'react';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import { message, Button, Modal, Card } from 'antd';
-import { RiDeleteBin2Fill } from "react-icons/ri";
-import { FaEdit } from "react-icons/fa";
+import { MdDelete } from "react-icons/md";
+import { MdModeEdit } from "react-icons/md";
 
 
 
@@ -143,8 +143,8 @@ export const index = () => {
   }
 
   return (
-    <div className='mx-auto container p-4' >
-      <div className='bg-white p-2 py-5 w-full max-w-md mx-auto shadow-md' >
+    <div className='mx-auto container p-4 ' >
+      <div className=' p-2 py-5 w-full max-w-md mx-auto shadow-md   bg-red-200 text-center font-bold' >
       <h3 >Add new category:</h3>
       
     <br/>
@@ -164,11 +164,11 @@ export const index = () => {
           <Form className='addCategoryForm'>
               <div className='formDiv'>
             {contextHolder}
-            <Field name="categoryName" type="text" categoryName='bg-slate-500' placeholder="Enter your  categoryName" />
+            <Field name="categoryName" type="text" categoryName='bg-slate-500' placeholder="Enter your  categoryName" className='text-bold border-red'/>
             {errors.categoryName && touched.categoryName ? <div>{errors.categoryName}</div> : null}
     <br/> <br/>
    
-            <button className='submitBtn text-red-400 hover:text-red-800 text-center' type="submit">Submit</button>
+            <button className='submitBtn  hover:text-red-800 text-center bg-green-300 p-2 rounded-full ' type="submit">Submit</button>
             </div>
           </Form>
           
@@ -182,14 +182,14 @@ export const index = () => {
             <Modal title="Delete category" open={isModalOpen2} onCancel={handleCancel} onOk={()=>deleteCat(selectedEditCat._id)}>
               <p>Are you sure you want to delete this category ?</p>
             </Modal>
-      <Card title="Valid Categories list">
+      <Card title="Valid Categories list" className='font-bold align-center'>
         {categoryList.length > 0 ? categoryList.map((item, id) => {
           return <Card.Grid style={gridStyle}>
-            <h3> {id + 1}.  {item.categoryName}</h3>
+            <h3 className='font-bold'> {id + 1}.  {item.categoryName}</h3>
             <br />
-            <div className='icons'>
-              <p onClick={() => showModal2(item)}><RiDeleteBin2Fill size={30} color='red' /></p>
-              <p onClick={() => showModal1(item)}><FaEdit size={30} color='green' /></p>
+            <div className='icons flex justify-between'>
+              <p onClick={() => showModal2(item)}>< MdDelete size={30} color='red' /></p>
+              <p onClick={() => showModal1(item)}>< MdModeEdit size={30} color='green' /></p>
             </div>
 
           

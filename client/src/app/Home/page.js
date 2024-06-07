@@ -4,13 +4,14 @@ import { useState,useEffect } from "react";
 import CategoryList from "../../Component/categorylist/page";
 import Banner from "../../Component/Banner/page"
 import Product from "../../Component/product/page"
+import { Pagination } from 'antd';
 
 
 function page() {
   const [allProducts, setAllProducts] = useState([]);
-
+  const [currentPage, setCurrentPage] = useState(1);
   const fetchProducts = async () => {
-      const res = await fetch('http://localhost:4001/get-product');
+      const res = await fetch('http://localhost:4001/get-product?page='+page);
       const data = await res.json();
       setAllProducts(data.products);
   };
@@ -19,8 +20,8 @@ function page() {
       fetchProducts();
   }, []);
   return (
-    <div>
-    HOME
+    <div className="bg-orange-400">
+   
     
     <CategoryList/>
     <Banner/>
@@ -34,7 +35,7 @@ function page() {
             ))}
              
         </div>
-   
+        <Pagination onChange={(page)=>fetchProducts(page)} defaultCurrent={1} total={50} />
     </div>
   )
 }

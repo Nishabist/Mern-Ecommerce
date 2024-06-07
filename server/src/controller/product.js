@@ -31,19 +31,47 @@ const getProductCategory = async (req, res) => {
 
 const categoryWiseProduct =async(req,res)=>{
     try {
-        const {categoryName} = req?.body || req?.query
-        const product = await Product.find({categoryName})
-        res.json({
-            data:product,
-            message:"Product "
-        })
-        
+        const { categoryName } = req.query; // Ensure we're using query parameters
+        if (!categoryName) {
+            return res.status(400).json({
+                message: "Category name is required"
+            });
+        }
+
+        // console.log(`Fetching products for category: ${categoryName}`);
+
+        const products = await Product.find({ categoryName }).lean();
+        // console.log(`Products found: ${products.length}`);
+
+        res.status(200).json({
+            data: products,
+            message: "Products fetched successfully",
+            success: true
+        });
     } catch (error) {
-        res.status(400).json({
-            message:error.message
-        })
-        
+        console.error("Error fetching products for category:", error);
+        res.status(500).json({
+            message: "Error fetching products for category",
+            error: error.message,
+            success: false
+        });
     }
+
+    // try {
+    //     const {categoryName} = req?.body || req?.query
+    //     const product = await Product.find({categoryName})
+    //     res.json({
+    //         data:product,
+    //         message:"Product "
+    //     })
+        
+    // } catch (error) {
+    //     res.status(400).json({
+    //         message:error.message
+    //     })
+        
+    // }
+    
 }
 const searchProduct = async (req, res) => {
     try {
@@ -62,5 +90,26 @@ const searchProduct = async (req, res) => {
     }
 };
 
+const updateProduct=async(req,res)=>{
+    const id = req.body._id;
+    const data= await Product.findByIdAndUpdate(id,req.body);
+    if(data){
+      res.json({msg: "product updated successfully"})
+    }else{
+      res.json({msg:'couldnot update product'});
+    }
+   }
 
-module.exports = { getProductCategory,categoryWiseProduct ,searchProduct};
+const deleteProduct=async(req,res)=>{
+    console.log(req.body)
+    const data= await Product.findByIdAndDelete(req.body.id)
+  
+    if(data){
+      res.json({msg: "product deleted successfully"})
+    }
+   }
+  
+
+
+
+module.exports = { getProductCategory,categoryWiseProduct ,searchProduct,updateProduct,deleteProduct};

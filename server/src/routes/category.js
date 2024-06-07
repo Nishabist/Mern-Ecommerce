@@ -14,7 +14,7 @@ router.get('/category',getCategory)
 
  router.delete('/category',deleteCategory)
 
- router.put('/category',editCategory)
+//  router.put('/category',editCategory)
 
 
 module.exports=router

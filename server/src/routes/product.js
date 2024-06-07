@@ -7,7 +7,7 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs')
 const Product = require('../model/product')
-const {getProductCategory,categoryWiseProduct,searchProduct}=require('../controller/product')
+const {getProductCategory,categoryWiseProduct,searchProduct,deleteProduct,updateProduct}=require('../controller/product')
 
 // Multer configuration for file upload
 const uploadsDirectory = path.join(__dirname,'..','..', 'uploads', 'image');
@@ -43,7 +43,9 @@ router.post('/upload-product', upload.single('image'), async (req, res) => {
 // Get all products endpoint
 router.get('/get-product', async (req, res) => {
   try {
-    const products = await Product.find();
+    const totalCount = await Product.find().count();
+    const skipPage=(req.query.page -1)*3
+    const products = await Product.find().limit(20).skip(skipPage)
     res.json({ success: true, products });
   } catch (error) {
     console.error('Error fetching products:', error);
@@ -96,7 +98,10 @@ router.get("/products-image", async (req, res) => {
 });
 
 router.get("/productcategory",getProductCategory)
-router.post("/productbycategory",categoryWiseProduct)
+router.get("/categoryproducts",categoryWiseProduct)
 router.get('/searchproduct',searchProduct)
+router.delete('/product',deleteProduct)
+router.put('/product',updateProduct)
+
 
 module.exports= router

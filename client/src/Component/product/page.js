@@ -14,7 +14,7 @@ function product(props) {
 
   };
   return (
-    <div>
+    <div className='max-w-sm bg-white shadow-lg rounded-lg overflow-hidden m-4'>
        <Link href={`/product/${props.data._id}`}>
       <div className="bg-white p-4 rounded">
         
@@ -26,7 +26,7 @@ function product(props) {
                                     />
                                    
                                 </div>
-                                <h1 className="text-ellipsis line-clamp-2">{props.data.productName}</h1>
+                                <h1 className="text-gray-900 font-bold text-xl mb-2">{props.data.productName}</h1>
                                 <p className="text-ellipsis line-clamp-2">{props.data.description}</p>
                             </div>
                             <p className="semi-bold">Rs {props.data.selling}</p>
