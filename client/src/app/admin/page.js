@@ -1,12 +1,62 @@
-import Link from 'next/link'
-import React from 'react'
+'use client'
 
+import React, { useEffect,useState } from 'react'
+import Link from 'next/link'
+import Header from '../../Component/Header/page'
+import Footer from '../../Component/Footer/page'
+import { Button, Space, Table, Tag } from 'antd';
+const { Column } = Table;
 function page() {
+  
+  const [userList, setUserList] = useState([])
+  const userFetch = async () => {
+    const res = await fetch(`http://localhost:4001/user`)
+    const data = await res.json()
+    setUserList(data.user)
+  }
+  const columns = [
+    {
+      title: 'Name',
+      dataIndex: 'name',
+      key: 'name',
+      render: (text) => <a>{text}</a>,
+    },
+    {
+      title: 'email',
+      dataIndex: 'email',
+      key: 'email',
+    },
+    {
+      title: 'phoneNumber',
+      dataIndex: 'phoneNumber',
+      key: 'phoneNumber',
+    },
+   
+    {
+      title: 'Action',
+      key: 'action',
+      render: (_, record) => (
+        <Space size="middle">
+          <a>Edit </a>
+          <a>Delete</a>
+        </Space>
+      ),
+    },
+  ];
+
+  useEffect(()=>{
+    userFetch()
+  },[])
+
   return (
     <div>
+      <Header/>
+      <div className='flex justify-around'>
+    <div className='bg-amber-400'>
+     
       <section class="text-gray-600 body-font">
        
-  <div class="container px-5 py-24 mx-auto">
+  <div class="container px-5 py-24 mx-auto ">
   <h1>Admin Page</h1>
     <div class="flex flex-wrap -m-4">
     
@@ -49,6 +99,18 @@ function page() {
     </div>
   </div>
 </section>
+    </div>
+    <div>
+    <Table columns={columns} dataSource={userList.map((item, id) => ({
+          key: id, 
+          name: item.name,
+          email: item.email,
+          phoneNumber: item.phoneNumber,
+          tags: item.tags,
+        }))} />
+    </div>
+   </div>
+    <Footer/>
     </div>
   )
 }

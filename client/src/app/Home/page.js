@@ -20,7 +20,7 @@ function page() {
       fetchProducts();
   }, []);
   return (
-    <div className="bg-orange-400">
+    <div className="bg-amber-400">
    
     
     <CategoryList/>

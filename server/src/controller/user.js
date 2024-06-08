@@ -90,6 +90,30 @@ const registerUser=async(req,res)=>{
     res.status(500).json({ msg: 'Internal server error' });
   }
    }
-  
 
-    module.exports={registerUser,loginUser,forgetpassword}
+   const getUser=async(req,res)=>{
+const user= await User.find()
+res.json({user})
+   }
+  
+   const editUser=async(req,res)=>{
+      const id = req.body._id;
+      const data= await User.findByIdAndUpdate(id,req.body);
+      if(data){
+        res.json({msg: "user updated successfully"})
+      }else{
+        res.json({msg:'couldnot update user'});
+      }
+     }
+     const deleteUser= async(req,res)=>{
+      const data= await User.findByIdAndDelete(req.body.id)
+    
+      if(data){
+        res.json({msg: "user deleted successfully"})
+      }
+      else{
+         res.json({msg:'couldnot delete user'});
+       }
+     }
+
+    module.exports={registerUser,loginUser,forgetpassword,getUser,editUser,deleteUser}
