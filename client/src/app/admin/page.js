@@ -1,19 +1,53 @@
 'use client'
 
-import React, { useEffect,useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Header from '../../Component/Header/page'
 import Footer from '../../Component/Footer/page'
-import { Button, Space, Table, Tag } from 'antd';
+import { Button, Space, Table, message } from 'antd';
+import { MdDelete, MdModeEdit } from "react-icons/md";
+
 const { Column } = Table;
-function page() {
-  
-  const [userList, setUserList] = useState([])
+
+function Page() {
+  const [userList, setUserList] = useState([]);
+  const [messageApi, contextHolder] = message.useMessage();
+
   const userFetch = async () => {
-    const res = await fetch(`http://localhost:4001/user`)
-    const data = await res.json()
-    setUserList(data.user)
-  }
+    try {
+      const res = await fetch('http://localhost:4001/user');
+      if (!res.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await res.json();
+      setUserList(data.user);
+    } catch (error) {
+      messageApi.error('Failed to fetch users');
+      console.error('Failed to fetch users:', error);
+    }
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      const res = await fetch('http://localhost:4001/delete-user', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id }),
+      });
+      const data = await res.json();
+      messageApi.open({
+        type: res.status === 200 ? 'success' : 'error',
+        content: data.msg,
+      });
+      if (res.status === 200) {
+        userFetch();
+      }
+    } catch (error) {
+      messageApi.error('Failed to delete user');
+      console.error('Failed to delete user:', error);
+    }
+  };
+
   const columns = [
     {
       title: 'Name',
@@ -22,97 +56,80 @@ function page() {
       render: (text) => <a>{text}</a>,
     },
     {
-      title: 'email',
+      title: 'Email',
       dataIndex: 'email',
       key: 'email',
     },
     {
-      title: 'phoneNumber',
+      title: 'Phone Number',
       dataIndex: 'phoneNumber',
       key: 'phoneNumber',
     },
-   
     {
       title: 'Action',
       key: 'action',
-      render: (_, record) => (
+      render: (text, record) => (
         <Space size="middle">
-          <a>Edit </a>
-          <a>Delete</a>
+          <button><MdModeEdit color='green' /></button>
+          <button onClick={() => handleDelete(record._id)}><MdDelete color='red' /></button>
         </Space>
       ),
     },
   ];
 
-  useEffect(()=>{
-    userFetch()
-  },[])
+  useEffect(() => {
+    userFetch();
+  }, []);
 
   return (
     <div>
-      <Header/>
+      {contextHolder}
+      <Header />
+      <h1 className='font-bold text-xl text-center py-4'>Admin Page</h1>
       <div className='flex justify-around'>
-    <div className='bg-amber-400'>
-     
-      <section class="text-gray-600 body-font">
-       
-  <div class="container px-5 py-24 mx-auto ">
-  <h1>Admin Page</h1>
-    <div class="flex flex-wrap -m-4">
-    
-   
-      <div class="p-4 lg:w-1/3">
-      <Link href="/admin/category">
-        <div class="h-full bg-gray-100 bg-opacity-75 px-8 pt-16 pb-24 rounded-lg overflow-hidden text-center relative">
-          
-          <h1 class="title-font sm:text-2xl text-xl font-medium text-gray-900 mb-3">CATEGORY</h1>
-          
-        
-         
+        <div>
+          <section className="text-gray-600 body-font">
+            <div className="container px-5 py-24 mx-auto">
+              <div className="-m-4">
+                <div className="p-4">
+                  <Link href="/admin/category">
+                    <div className="bg-gray-100 bg-opacity-75 rounded-lg overflow-hidden text-center relative">
+                      <h1 className="title-font sm:text-2xl text-xl font-medium text-gray-900 mb-3">CATEGORY</h1>
+                    </div>
+                  </Link>
+                </div>
+                <div className="p-4">
+                  <Link href="/admin/allproduct">
+                    <div className="h-full bg-gray-100 bg-opacity-75 rounded-lg overflow-hidden text-center relative">
+                      <h1 className="title-font sm:text-2xl text-xl font-medium text-gray-900 mb-3">Product</h1>
+                    </div>
+                  </Link>
+                </div>
+                <div className="p-4">
+                  <div className="h-full bg-gray-100 bg-opacity-75 rounded-lg overflow-hidden text-center relative">
+                    <h1 className="title-font sm:text-2xl text-xl font-medium text-gray-900 mb-3">All User</h1>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
         </div>
-        </Link>
-      </div>
-      
-      
-      <div class="p-4 lg:w-1/3">
-      <Link href="/admin/allproduct">
-        <div class="h-full bg-gray-100 bg-opacity-75 px-8 pt-16 pb-24 rounded-lg overflow-hidden text-center relative">
-   
-          <h1 class="title-font sm:text-2xl text-xl font-medium text-gray-900 mb-3">Product</h1>
-         
-          
-          
-        </div>
-        </Link>
-      </div>
-    
-
-      <div class="p-4 lg:w-1/3">
-        <div class="h-full bg-gray-100 bg-opacity-75 px-8 pt-16 pb-24 rounded-lg overflow-hidden text-center relative">
-        
-          <h1 class="title-font sm:text-2xl text-xl font-medium text-gray-900 mb-3">All User</h1>
-         
-          
-          
+        <div>
+          <Table
+            columns={columns}
+            dataSource={userList.map((item, id) => ({
+              key: id,
+              _id: item._id,
+              name: item.name,
+              email: item.email,
+              phoneNumber: item.phoneNumber,
+            }))}
+          />
         </div>
       </div>
+      <Footer />
     </div>
-  </div>
-</section>
-    </div>
-    <div>
-    <Table columns={columns} dataSource={userList.map((item, id) => ({
-          key: id, 
-          name: item.name,
-          email: item.email,
-          phoneNumber: item.phoneNumber,
-          tags: item.tags,
-        }))} />
-    </div>
-   </div>
-    <Footer/>
-    </div>
-  )
+  );
 }
 
-export default page
+export default Page;
