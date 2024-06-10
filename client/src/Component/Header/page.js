@@ -89,14 +89,14 @@ const content = (
           </div>
         
         </div>):(
-     <div className="flex items-center ">
+     <div className="flex items-center justify-between  ">
        
-       <div>
+       <div className="m-4 ">
       <Link href="/login" className="px-2 py-1 rounded-full text-white bg-red-600 hover:bg-red-700 ">Login</Link>
        
       </div>
-      <div>
-      <Link href="/register" className="px-0 py-1 rounded-full text-white bg-red-600 hover:bg-red-700 ">register</Link>
+      <div className="">
+      <Link href="/register" className="px-2 py-1 rounded-full text-white bg-red-600 hover:bg-red-700 ">register</Link>
        
       </div> 
      </div>

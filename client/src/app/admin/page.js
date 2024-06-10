@@ -89,7 +89,7 @@ function Page() {
       <div className='flex justify-around'>
         <div>
           <section className="text-gray-600 body-font">
-            <div className="container px-5 py-24 mx-auto">
+            <div className=" mx-auto">
               <div className="-m-4">
                 <div className="p-4">
                   <Link href="/admin/category">
