@@ -2,10 +2,11 @@
 import React, { useEffect, useState } from 'react'
 import Uploadproduct from '../../../Component/uploadproduct/page'
 import Card from '../../../Component/Card/page'
+import { message } from 'antd'
 function allProduct() {
     const[openUploadProduct,setOpenUploadProduct ] = useState(false)
     const [allProduct ,setAllProduct]=useState([])
-    
+    const [messageApi, contextHolder] = message.useMessage();
 
     const fetchProduct =async()=>{
       const res = await fetch('http://localhost:4001/get-product',)
@@ -15,6 +16,28 @@ function allProduct() {
     useEffect(()=>{
       fetchProduct()
     },[])
+    const deleteProduct = async (id) => {
+      const res = await fetch('http://localhost:4001/product', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id })
+      })
+      const data = await res.json()
+      messageApi.open({
+        type: res.status == 200 ? 'success' : 'error',
+        content: data.msg,
+      });
+      console.log(res)
+      if (res.status === 200) {
+        fetchProduct()
+      }
+    };
+  
+    const editProduct = async (values) => {
+      setEditFields(values)
+      setOpen(true)
+  
+    };
   return (
     <div>
       <div className='bg-white py-2 px-4 flex justify-between items-center'>
@@ -31,7 +54,10 @@ function allProduct() {
       {
   allProduct.length > 0 && allProduct.map(product => (
     <div key={product._id} >
-      <Card data={product} />
+      <Card data={product}
+        onDelete={deleteProduct}
+        onEdit={editProduct}
+       />
     </div>
   ))
 }

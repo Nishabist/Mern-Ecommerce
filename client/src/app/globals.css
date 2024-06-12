@@ -3,3 +3,6 @@
 @tailwind utilities;
 
 
+.gap-5 {
+    gap: 3.9rem;
+}

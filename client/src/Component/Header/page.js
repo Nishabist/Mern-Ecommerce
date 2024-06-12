@@ -63,7 +63,7 @@ const content = (
       placeholder="input search text"
       enterButton="Search"
       size="medium"
-      className="w-[500px]"
+      className="w-[800px]"
       suffix={suffix}
       onSearch={onSearch}
     />
@@ -71,14 +71,15 @@ const content = (
         
 
           
-        {isLoggedIn ?( <div className="flex items-center gap-7">
+        {isLoggedIn ?( <div className="flex items-center  space-x-20 ">
          
-          <div className="test-3xl cursor-pointer">
+       
+          <div className="test-3xl cursor-pointer mt-3">
           <Popover placement="bottom" title={text} content={content}>
           <Button><FaUser/> </Button>
         </Popover>
-             
-          </div>
+             </div>
+          
           
             <div className="text-2xl relative"> <Link href="/cart">
             <span><FaShoppingCart /></span>

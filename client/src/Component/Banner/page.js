@@ -71,26 +71,8 @@ alt="Picture of the author"
        src="/assest/banner/img2_mobile.webp" />
       </h3>
     </div>
-    <div>
-      <h3 style={contentStyle}>
-      <Image width={1504}
-                height={1500}
-       src="/assest/banner/img3_mobile.webp" />
-      </h3>
-    </div>
-    <div>
-      <h3 style={contentStyle}>
-      <Image width={1504}
-                height={1500}
-       src="/assest/banner/img4_mobile.webp" />
-      </h3>
-    </div><div>
-      <h3 style={contentStyle}>
-      <Image width={1504}
-                height={1500}
-       src="/assest/banner/img5_mobile.webp" />
-      </h3>
-    </div>
+    
+    
   </Carousel>
       </div>
     </div>

@@ -57,20 +57,7 @@ const categoryWiseProduct =async(req,res)=>{
         });
     }
 
-    // try {
-    //     const {categoryName} = req?.body || req?.query
-    //     const product = await Product.find({categoryName})
-    //     res.json({
-    //         data:product,
-    //         message:"Product "
-    //     })
-        
-    // } catch (error) {
-    //     res.status(400).json({
-    //         message:error.message
-    //     })
-        
-    // }
+   
     
 }
 const searchProduct = async (req, res) => {
@@ -109,7 +96,8 @@ const deleteProduct=async(req,res)=>{
     }
    }
   
-
+   
+   
 
 
 module.exports = { getProductCategory,categoryWiseProduct ,searchProduct,updateProduct,deleteProduct};

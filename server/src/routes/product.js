@@ -62,24 +62,6 @@ router.get('/products/:_id',async(req,res)=>{
  })
 
 
-// router.get("/products-image", async (req, res) => {
-//   console.log(__dirname);
-//   const productDetail = await Product.findById(req.query.productId);
-
-//   if (productDetail?.image) {
-//     const imgPath = path.join(
-//       __dirname + "/../../uploads/image/",
-//       productDetail.image
-//     );
-//     res.sendFile(imgPath);
-//   } else {
-//     const imgPath = path.join(
-//       __dirname + "/../../uploads/image/"
-      
-//     );
-//     res.sendFile(imgPath);
-//   }
-// });
 router.get("/products-image", async (req, res) => {
   try {
     const productId = req.query.productId;
