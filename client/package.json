@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.2.5",
+    "@stripe/stripe-js": "^3.5.0",
     "antd": "^5.17.0",
     "formik": "^2.4.6",
     "logger": "^0.0.1",

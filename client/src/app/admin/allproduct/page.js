@@ -3,10 +3,13 @@ import React, { useEffect, useState } from 'react'
 import Uploadproduct from '../../../Component/uploadproduct/page'
 import Card from '../../../Component/Card/page'
 import { message } from 'antd'
+import { Formik, Form, Field } from 'formik';
 function allProduct() {
     const[openUploadProduct,setOpenUploadProduct ] = useState(false)
     const [allProduct ,setAllProduct]=useState([])
     const [messageApi, contextHolder] = message.useMessage();
+    const [open, setOpen] = useState(false)
+    const [editFields, setEditFields] = useState({})
 
     const fetchProduct =async()=>{
       const res = await fetch('http://localhost:4001/get-product',)
@@ -38,8 +41,39 @@ function allProduct() {
       setOpen(true)
   
     };
+
+    const submitEditProduct = async (values) => {
+      const res = await fetch('http://localhost:4001/product', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(values)
+      })
+      const data = await res.json()
+      messageApi.open({
+        type: res.status == 200 ? 'success' : 'error',
+        content: data.msg,
+      });
+      if (res.status === 200) {
+        fetchProduct()
+        setOpen(false)
+      }
+  
+    }
+
   return (
     <div>
+      <Formik
+          initialValues={{ setEditFields }}
+          onSubmit={(values) => {
+            submitEditProduct(values)
+            
+          }}>
+            <Form>
+{/* <Field name="productName"/> */}
+JSON.stringify{submitEditProduct}
+            </Form>
+            </Formik>
+
       <div className='bg-white py-2 px-4 flex justify-between items-center'>
         <h2 className='font-bold text-lg '>All Product</h2>
         <button className='border-2 border-red-600 text-red-600 hover:bg-red-600 hover:text-slate-200' onClick={()=>setOpenUploadProduct(true)}>Upload Product</button>
