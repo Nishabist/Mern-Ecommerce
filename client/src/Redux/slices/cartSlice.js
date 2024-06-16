@@ -23,7 +23,8 @@ const cartSlice = createSlice({
             state.quantity += 1;
         },
         RemoveFromCart: (state, action) => {
-            // Add your logic for removing an item from the cart here
+            state.cartItems = state.cartItems.filter(item => item.cartItems.data._id !== action.payload.cartItems.data._id);
+            state.quantity -= 1;
         },
     },
 });

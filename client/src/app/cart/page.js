@@ -71,7 +71,7 @@ console.log(cartItems)
               
                   
                   <button
-                    onClick={() => handleRemove(cartItem)}
+                      onClick={() => handleRemove(cartItem)}
                     className="mt-2 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-700"
                   >
                     Remove

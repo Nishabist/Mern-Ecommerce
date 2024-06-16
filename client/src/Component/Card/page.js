@@ -25,7 +25,7 @@ function card(props)  {
         {props.data.description}
       </p>
       <p className='font-semibold text-lg'>
-        Rs {props.data.selling}
+        $ {props.data.selling}
       </p>
       <p className='flex justify-between' ><span onClick={() => props.onEdit(props.data)}>< MdModeEdit size={30} color='green' /></span>
      <span onClick={() => props.onDelete(props.data._id)}>< MdDelete size={30} color='red' /></span> </p>

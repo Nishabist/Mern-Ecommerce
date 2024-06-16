@@ -29,8 +29,8 @@ function product(props) {
                                 <h1 className="text-gray-900 font-bold text-xl mb-2">{props.data.productName}</h1>
                               
                             </div>
-                            <p className="font-bold ">Rs {props.data.selling}</p>
-                            <p className='text-red-500 font-semibold line-through '>Rs{props.data.price}</p>
+                            <p className="font-bold ">$ {props.data.selling}</p>
+                            <p className='text-red-500 font-semibold line-through '>${props.data.price}</p>
                         </div>
                     
                    
