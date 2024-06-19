@@ -11,12 +11,7 @@
 - **Add To Cart and Checkout**
 - **Payment**: Strip 
 
- ### This project is build by using following libraries and Framework
- * [![Next][Next.js]][Next-url]
-* [![Redux][Redux]][Next-url]
-* [![Node][Node.js]][Node-url]
-* [![Express][Express.js]][Express-url]
-* [![MongoDb][MongoDB]][MongoDB-url]
+
 
 
 
